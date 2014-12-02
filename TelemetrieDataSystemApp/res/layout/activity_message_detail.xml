@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+		android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/detail_typeicon"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="6dip"
+            android:contentDescription="@string/app_name_short"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/type"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignWithParentIfMissing="true"
+	        android:layout_toRightOf="@+id/detail_typeicon"
+	        android:layout_marginLeft="15dip"
+			android:layout_marginTop="15dip"
+	        android:gravity="center_vertical"
+	        android:singleLine="true"
+	        android:text="@+id/type"
+	        android:textSize="16sp" />
+    </RelativeLayout>
+    
+    <View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dip"
+	    android:background="#000000" />
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+		android:orientation="horizontal" >
+
+	    <TextView
+	        android:id="@+id/date"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center_vertical"
+	        android:singleLine="true"
+			android:layout_marginLeft="15dip"
+			android:layout_marginTop="15dip"
+	        android:text="@+id/date"
+	        android:textColor="#000000" />
+	
+	    <TextView
+	        android:id="@+id/time"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center_vertical"
+	        android:singleLine="true"
+			android:layout_marginLeft="15dip"
+			android:layout_marginTop="15dip"
+	        android:text="@+id/time"
+	        android:textColor="#000000" />
+    </LinearLayout>
+    
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dip"
+	    android:background="#000000" />
+
+    <TextView
+        android:id="@+id/black_on_red"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+		android:layout_marginTop="15dip"
+        android:text="@string/position"
+        android:textColor="#000000" />
+  
+    <LinearLayout
+        android:id="@+id/show_position"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+		android:orientation="horizontal" >
+
+	    <TextView
+	        android:id="@+id/lat"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center_vertical"
+	        android:singleLine="true"
+			android:layout_marginLeft="15dip"
+			android:layout_marginTop="15dip"
+	        android:text="@+id/lat"
+	        android:textColor="#000000" />
+	
+	    <TextView
+	        android:id="@+id/lng"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center_vertical"
+	        android:singleLine="true"
+			android:layout_marginLeft="15dip"
+			android:layout_marginTop="15dip"
+	        android:text="@+id/lng"
+	        android:textColor="#000000" />
+    </LinearLayout>
+    
+    <View
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dip"
+	    android:background="#000000" />
+    
+	<ImageView
+		android:id="@+id/image"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:contentDescription="@string/app_name_short"
+		android:src="@drawable/logo" />
+
+</LinearLayout>

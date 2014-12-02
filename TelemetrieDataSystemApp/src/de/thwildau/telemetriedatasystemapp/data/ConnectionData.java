@@ -1,21 +1,21 @@
 package de.thwildau.telemetriedatasystemapp.data;
 
-public class Connection {
+public class ConnectionData {
 
-	private static Connection instance;
+	private static ConnectionData instance;
 	
 	private String server = "";
-	private int port = 0;
-	private String fahrzeugID = "";
-	private String password = "";
+	private int port = 0;				//not needed
+	private String fahrzeugID = "";		//not used anymore
+	private String password = "";		//not used anymore
 	
-	private Connection() {}
+	private ConnectionData() {}
 	
-	public static synchronized Connection getInstance () {
-		if (Connection.instance == null) {
-		 	Connection.instance = new Connection ();
+	public static synchronized ConnectionData getInstance () {
+		if (ConnectionData.instance == null) {
+		 	ConnectionData.instance = new ConnectionData ();
 		}
-		return Connection.instance;
+		return ConnectionData.instance;
 	}
 	
 	public String getServer() {

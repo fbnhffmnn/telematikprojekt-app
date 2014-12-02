@@ -8,11 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import de.thwildau.telemetriedatasystemapp.data.Connection;
+import de.thwildau.telemetriedatasystemapp.data.ConnectionData;
 
 public class Settings extends Activity {
 
-	Connection connection = Connection.getInstance();
+	ConnectionData connection = ConnectionData.getInstance();
 
 	EditText settingServer;
 	EditText settingPort;

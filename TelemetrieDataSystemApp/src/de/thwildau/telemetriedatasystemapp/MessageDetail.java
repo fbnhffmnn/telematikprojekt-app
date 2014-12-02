@@ -11,11 +11,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import de.thwildau.telemetriedatasystemapp.data.Notification;
+import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
 
 public class MessageDetail extends Activity {
 
-	Notification msg;
+	TDSMessage msg;
 	LinearLayout postionBtn;
 
 	@Override
@@ -26,7 +26,7 @@ public class MessageDetail extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		msg = (Notification) getIntent().getSerializableExtra("messageObj");
+		msg = (TDSMessage) getIntent().getSerializableExtra("messageObj");
 		
 		
 	    ImageView typeIcon = (ImageView) findViewById(R.id.detail_typeicon);

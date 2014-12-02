@@ -1,16 +1,26 @@
 package de.thwildau.telemetriedatasystemapp;
 
+import java.util.Calendar;
+
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import de.thwildau.telemetriedatasystemapp.data.Connection;
+import de.thwildau.telemetriedatasystemapp.data.ConnectionData;
+import de.thwildau.telemetriedatasystemapp.data.MessageManager;
+import de.thwildau.telemetriedatasystemapp.data.NotificationTypeManager;
+import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
 
 public class MainActivity extends Activity {
+	
 
-	Connection connection = Connection.getInstance();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +28,9 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		Load.loadAct.finish();
 		
-		//test start
-		Log.v("Server value=",connection.getServer());
-		Integer meinInteger = new Integer(connection.getPort()); 
-        String s = meinInteger.toString();
-		Log.v("Port value=",s);
-		Log.v("FahrzeugID value=",connection.getFahrzeugID());
-		Log.v("Password value=",connection.getPassword());
-		//test ende
+        Intent i = new Intent(MainActivity.this, TDSNotificationService.class);
+        i.putExtra("name", "SurvivingwithAndroid");       
+        MainActivity.this.startService(i);
 		
 		Button recevMess = (Button) findViewById(R.id.ButtonRecevMess);
 		Button settings = (Button) findViewById(R.id.ButtonSetting);

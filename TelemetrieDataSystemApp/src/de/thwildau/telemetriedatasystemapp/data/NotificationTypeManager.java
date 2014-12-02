@@ -1,24 +1,24 @@
 package de.thwildau.telemetriedatasystemapp.data;
 
 
-public class NotificationManager {
+public class NotificationTypeManager {
 
-	private static NotificationManager instance;
+	private static NotificationTypeManager instance;
 	
 	private NotificationType[] types; 
 	
-	NotificationManager(){
+	NotificationTypeManager(){
 		setTypes(new NotificationType[]{
 			new NotificationType(0, "Information", null),
 			new NotificationType(1, "Warning", null),
 		});
 	}
 	
-	public static synchronized NotificationManager getInstance () {
-		if (NotificationManager.instance == null) {
-			NotificationManager.instance = new NotificationManager ();
+	public static synchronized NotificationTypeManager getInstance () {
+		if (NotificationTypeManager.instance == null) {
+			NotificationTypeManager.instance = new NotificationTypeManager ();
 		}
-		return NotificationManager.instance;
+		return NotificationTypeManager.instance;
 	}
 
 	public NotificationType getType(int i) {

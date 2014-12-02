@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import android.graphics.Bitmap;
 
-public class Notification implements Serializable {
+public class TDSMessage implements Serializable {
 
 	/**
 	 * 

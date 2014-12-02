@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import de.thwildau.telemetriedatasystemapp.data.Notification;
+import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
 
-public class NotificationArrayAdapter extends ArrayAdapter<Notification> {
+public class NotificationArrayAdapter extends ArrayAdapter<TDSMessage> {
 	private final Context context;
-	private final Notification[] values;
+	private final TDSMessage[] values;
 	
-	public NotificationArrayAdapter(Context context, Notification[] values) {
+	public NotificationArrayAdapter(Context context, TDSMessage[] values) {
 		super(context, R.layout.activity_receive_messages, values);
 		this.context = context;
 		this.values = values;

@@ -7,10 +7,10 @@ public class MessageManager {
 	
 	private static MessageManager instance;
 	
-	private List<Notification> notifyList; 
+	private List<TDSMessage> notifyList; 
 	
 	MessageManager(){
-		notifyList = new ArrayList<Notification>();
+		notifyList = new ArrayList<TDSMessage>();
 	}
 	
 	public static synchronized MessageManager getInstance () {
@@ -20,20 +20,20 @@ public class MessageManager {
 		return MessageManager.instance;
 	}
 	
-	public void addNotification(Notification notify){
+	public void addNotification(TDSMessage notify){
 		notifyList.add(notify);
 	}
 
-	public List<Notification> getNotifyList() {
+	public List<TDSMessage> getNotifyList() {
 		return notifyList;
 	}
 
-	public void setNotifyList(List<Notification> notifyList) {
+	public void setNotifyList(List<TDSMessage> notifyList) {
 		this.notifyList = notifyList;
 	}
 	
-	public Notification[] getArrayFromNotifyList() {
-		Notification[] array = new Notification[notifyList.size()];
+	public TDSMessage[] getArrayFromNotifyList() {
+		TDSMessage[] array = new TDSMessage[notifyList.size()];
 		notifyList.toArray(array); // fill the array
 		return array;
 	}

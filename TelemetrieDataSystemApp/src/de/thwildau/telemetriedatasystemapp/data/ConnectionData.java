@@ -4,8 +4,8 @@ public class ConnectionData {
 
 	private static ConnectionData instance;
 	
-	private String server = "";
-	private int port = 0;				//not needed
+	private String server = "192.168.178.49";
+	private int port = 8080;				
 	private String fahrzeugID = "";		//not used anymore
 	private String password = "";		//not used anymore
 	

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ListView;
 import de.thwildau.telemetriedatasystemapp.data.MessageManager;
 import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
+import de.thwildau.telemetriedatasystemapp.services.NotificationArrayAdapter;
 
 public class ReceiveMessages extends ListActivity {
 

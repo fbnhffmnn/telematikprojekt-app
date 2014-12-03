@@ -1,4 +1,4 @@
-package de.thwildau.telemetriedatasystemapp;
+package de.thwildau.telemetriedatasystemapp.services;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import de.thwildau.telemetriedatasystemapp.R;
+import de.thwildau.telemetriedatasystemapp.R.id;
+import de.thwildau.telemetriedatasystemapp.R.layout;
 import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
 
 public class NotificationArrayAdapter extends ArrayAdapter<TDSMessage> {

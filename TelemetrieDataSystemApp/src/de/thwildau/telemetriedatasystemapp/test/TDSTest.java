@@ -1,4 +1,4 @@
-package de.thwildau.telemetriedatasystemapp;
+package de.thwildau.telemetriedatasystemapp.test;
 
 import java.util.Calendar;
 
@@ -19,7 +19,7 @@ public class TDSTest {
     double longitude1 = 13.40292;
     double latitude1 = 52.50452;
 	
-	TDSTest(){
+	public TDSTest(){
 		Log.v("Server value=",connection.getServer());
 		Integer meinInteger = new Integer(connection.getPort()); 
         String s = meinInteger.toString();

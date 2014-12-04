@@ -5,36 +5,42 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 import de.thwildau.telemetriedatasystemapp.data.ConnectionData;
+import de.thwildau.telemetriedatasystemapp.data.MessageManager;
+import de.thwildau.telemetriedatasystemapp.data.NotificationTypeManager;
 import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
-import de.thwildau.telemetriedatasystemapp.test.TDSTest;
 
 public class HTTPConnection extends AsyncTask<String, Void, String> {
 
 	private Exception exception;
 	private final String USER_AGENT = "Mozilla/5.0";
+	NotificationTypeManager notificationMnmgr = NotificationTypeManager
+			.getInstance();
+	MessageManager msgMnmgr = MessageManager.getInstance();
 
 	@Override
 	protected String doInBackground(String... arg0) {
-		
-		TDSTest test = new TDSTest();
-		
+		Boolean result = false;
+		// TDSTest test = new TDSTest();
+
 		try {
 			sendGet();
-			Boolean result = checkNewMessage();
-			if(result = true){
+			result = checkNewMessage();
+			if (result == true) {
 				return "new";
 			}
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "notnew";
+			return "not";
 		}
-		return "notnew";
+		return "not";
 	}
 
 	// HTTP GET request
@@ -55,14 +61,14 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		Log.v("Sending 'GET' request to URL", url);
 		Log.v("ResponseCode", String.valueOf(responseCode));
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
 		String inputLine;
-		StringBuffer response = new StringBuffer();
+		// StringBuffer response = new StringBuffer();
 
 		while ((inputLine = in.readLine()) != null) {
-			//response.append(inputLine);
-			getMessageFromString(inputLine);
-			Log.v("Response", inputLine);
+			// response.append(inputLine);
+			getMessagesFromString(inputLine);
 		}
 		in.close();
 
@@ -107,17 +113,41 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		return URL;
 	}
 
-	public TDSMessage getMessageFromString(String Message) {
-		Log.v("Response", Message);
-		return new TDSMessage();
+	public void getMessagesFromString(String str) {
+		Log.v("Response", str);
+		String[] msgArray = str.split("#");
+		if (str != "") {
+			msgMnmgr.clearList();
+
+			for (String s : msgArray) {
+				System.out.println(s);
+				String[] msg = s.split(";");
+
+				Calendar datum = new GregorianCalendar(
+						Integer.parseInt(msg[0]), Integer.parseInt(msg[1]) - 1,
+						Integer.parseInt(msg[2]), Integer.parseInt(msg[3]),
+						Integer.parseInt(msg[4]), Integer.parseInt(msg[5]));
+
+				TDSMessage n = new TDSMessage();
+				n.setDatum(datum);
+				n.setType(notificationMnmgr.getTypeByString(msg[6]));
+				n.setLatitude(Double.valueOf(msg[7]));
+				n.setLongitude(Double.valueOf(msg[8]));
+//				byte[] imageAsBytes = Base64.decode(myImageData.getBytes());
+//				Bitmap bp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+				n.setImage(null);
+				msgMnmgr.addNotification(n);
+			}
+		}
 	}
 
-	public Boolean checkNewMessage(){
-		
-		return true;
+	public Boolean checkNewMessage() {
+		if (msgMnmgr.sizeOfList() > msgMnmgr.getOldSizeOfList()) {
+			return true;
+		}
+		return false;
 	}
-	
-	
+
 	// // HTTP POST request
 	// private void sendPost() throws Exception {
 	//

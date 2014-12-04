@@ -25,5 +25,6 @@
     <string name="title_activity_message_detail">Message Details</string>
     <string name="position">Position:</string>
     <string name="title_activity_position_view">Position View</string>
+    <string name="right">></string>
 
 </resources>

@@ -1,6 +1,5 @@
 package de.thwildau.telemetriedatasystemapp.data;
 
-import android.widget.ImageView;
 
 public interface iNotificationType {
 	
@@ -12,8 +11,8 @@ public interface iNotificationType {
 	
 	public void setTypeName(String typeName);
 	
-	public ImageView getImage();
+	public int getImage();
 	
-	public void setImage(ImageView image);
+	public void setImage(int image);
 
 }

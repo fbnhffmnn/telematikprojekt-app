@@ -16,7 +16,6 @@ import android.util.Log;
 import de.thwildau.telemetriedatasystemapp.R;
 import de.thwildau.telemetriedatasystemapp.ReceiveMessages;
 import de.thwildau.telemetriedatasystemapp.connection.HTTPConnection;
-import de.thwildau.telemetriedatasystemapp.test.TDSTest;
 
 public class TDSNotificationService extends Service {
 
@@ -33,7 +32,7 @@ public class TDSNotificationService extends Service {
 		Log.v("OnCREATE=", "START BACKGROUND SERVICE");
 
 		Timer timer = new Timer();
-		timer.schedule(new MessageTask(), 10000, 10000);
+		timer.schedule(new MessageTask(), 0, 10000);
 	}
 
 	@Override
@@ -78,7 +77,7 @@ public class TDSNotificationService extends Service {
 		} else {
 			notification.flags |= Notification.FLAG_SHOW_LIGHTS;
 		}
-
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 		notification.setLatestEventInfo(context, contentTitle, contentText,	contentIntent);
 
 		notificationManager.notify(10001, notification);

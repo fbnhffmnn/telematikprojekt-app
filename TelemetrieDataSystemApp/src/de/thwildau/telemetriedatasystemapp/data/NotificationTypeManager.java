@@ -1,5 +1,8 @@
 package de.thwildau.telemetriedatasystemapp.data;
 
+import android.content.res.Resources;
+import de.thwildau.telemetriedatasystemapp.R;
+
 
 public class NotificationTypeManager {
 
@@ -9,8 +12,8 @@ public class NotificationTypeManager {
 	
 	NotificationTypeManager(){
 		setTypes(new NotificationType[]{
-			new NotificationType(0, "Information", null),
-			new NotificationType(1, "Warning", null),
+			new NotificationType(0, "Information", R.drawable.information),
+			new NotificationType(1, "Warning", R.drawable.warning),
 		});
 	}
 	
@@ -19,6 +22,15 @@ public class NotificationTypeManager {
 			NotificationTypeManager.instance = new NotificationTypeManager ();
 		}
 		return NotificationTypeManager.instance;
+	}
+	
+	public NotificationType getTypeByString(String str){
+		for(NotificationType i : types){
+			if(i.getTypeName().equals(str)){
+				return i;
+			}
+		}
+		return null;
 	}
 
 	public NotificationType getType(int i) {

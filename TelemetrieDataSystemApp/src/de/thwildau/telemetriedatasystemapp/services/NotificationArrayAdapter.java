@@ -1,9 +1,9 @@
 package de.thwildau.telemetriedatasystemapp.services;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.thwildau.telemetriedatasystemapp.R;
-import de.thwildau.telemetriedatasystemapp.R.id;
-import de.thwildau.telemetriedatasystemapp.R.layout;
 import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
 
 public class NotificationArrayAdapter extends ArrayAdapter<TDSMessage> {
@@ -32,10 +30,11 @@ public class NotificationArrayAdapter extends ArrayAdapter<TDSMessage> {
 	    TextView textViewfirst = (TextView) rowView.findViewById(R.id.firstLine);
 	    TextView textViewsecond = (TextView) rowView.findViewById(R.id.secondLine);
 	    ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+	    imageView.setImageResource(values[position].getType().getImage());
 	    textViewfirst.setText(String.valueOf(values[position].getType().getTypeName()));
 	    String date = String.valueOf(values[position].getDatum().get(Calendar.DAY_OF_MONTH));
 	    date += ".";
-	    date += String.valueOf(values[position].getDatum().get(Calendar.MONTH));
+	    date += String.valueOf(values[position].getDatum().get(Calendar.MONTH)+1);
 	    date += ".";
 	    date += String.valueOf(values[position].getDatum().get(Calendar.YEAR));
 	    date += "           ";

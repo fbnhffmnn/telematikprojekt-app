@@ -30,6 +30,8 @@ public class MessageDetail extends Activity {
 		
 		
 	    ImageView typeIcon = (ImageView) findViewById(R.id.detail_typeicon);
+	    typeIcon.setImageResource(msg.getType().getImage());
+	    
 		TextView type = (TextView) findViewById(R.id.type);
 		type.setText(msg.getType().getTypeName());
 		
@@ -37,7 +39,7 @@ public class MessageDetail extends Activity {
 		TextView time = (TextView) findViewById(R.id.time);
 	    String dateStr = String.valueOf(msg.getDatum().get(Calendar.DAY_OF_MONTH));
 	    dateStr += ".";
-	    dateStr += String.valueOf(msg.getDatum().get(Calendar.MONTH));
+	    dateStr += String.valueOf(msg.getDatum().get(Calendar.MONTH)+1);
 	    dateStr += ".";
 	    dateStr += String.valueOf(msg.getDatum().get(Calendar.YEAR));
 	    date.setText(dateStr);
@@ -53,6 +55,8 @@ public class MessageDetail extends Activity {
 		lng.setText(String.valueOf(msg.getLongitude()));
 		lat.setText(String.valueOf(msg.getLatitude()));
 		
+		ImageView image = (ImageView) findViewById(R.id.image);
+		image.setImageBitmap(msg.getImage());		
 		
 		postionBtn = (LinearLayout) findViewById(R.id.show_position);
 		final Intent intent = new Intent(this, PositionView.class);

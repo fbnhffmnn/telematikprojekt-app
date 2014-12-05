@@ -4,9 +4,7 @@ import java.io.Serializable;
 
 import de.thwildau.telemetriedatasystemapp.R;
 
-import android.widget.ImageView;
-
-public class NotificationType  implements iNotificationType,Serializable  {
+public class NotificationType  implements iNotificationType, Serializable  {
 	
 	/**
 	 * 

@@ -1,6 +1,5 @@
 package de.thwildau.telemetriedatasystemapp.data;
 
-import android.content.res.Resources;
 import de.thwildau.telemetriedatasystemapp.R;
 
 

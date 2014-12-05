@@ -25,6 +25,7 @@ public class ReceiveMessages extends ListActivity {
 		// use custom layout
 		NotificationArrayAdapter adapter = new NotificationArrayAdapter(this, values);
 		setListAdapter(adapter);
+		//adapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -52,4 +53,5 @@ public class ReceiveMessages extends ListActivity {
 	public void onBackPressed() {
 		this.finish();
 	}
+	
 }

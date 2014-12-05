@@ -1,13 +1,23 @@
 package de.thwildau.telemetriedatasystemapp.connection;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import android.graphics.Bitmap;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.os.AsyncTask;
 import android.util.Log;
 import de.thwildau.telemetriedatasystemapp.data.ConnectionData;
@@ -17,7 +27,6 @@ import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
 
 public class HTTPConnection extends AsyncTask<String, Void, String> {
 
-	private Exception exception;
 	private final String USER_AGENT = "Mozilla/5.0";
 	NotificationTypeManager notificationMnmgr = NotificationTypeManager
 			.getInstance();
@@ -26,10 +35,10 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 	@Override
 	protected String doInBackground(String... arg0) {
 		Boolean result = false;
-		// TDSTest test = new TDSTest();
 
 		try {
-			sendGet();
+			String response = sendGet(defineRequestURL());
+			getMessagesFromString(response);
 			result = checkNewMessage();
 			if (result == true) {
 				return "new";
@@ -43,10 +52,8 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		return "not";
 	}
 
-	// HTTP GET request
-	private Boolean sendGet() throws Exception {
-
-		String url = defineRequestURL();
+	// HTTP GET request for data
+	private String sendGet(String url) throws Exception {
 
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -64,15 +71,34 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				con.getInputStream()));
 		String inputLine;
-		// StringBuffer response = new StringBuffer();
+		StringBuffer response = new StringBuffer();
 
 		while ((inputLine = in.readLine()) != null) {
-			// response.append(inputLine);
-			getMessagesFromString(inputLine);
+			response.append(inputLine);
 		}
 		in.close();
 
-		return true;
+		return response.toString();
+
+	}
+
+	// HTTP GET request for image
+	private byte[] sendGetForImage(String url) throws Exception {
+
+		URL obj = new URL(url);
+
+		HttpGet httpRequest = new HttpGet(obj.toURI());
+		HttpClient httpclient = new DefaultHttpClient();
+
+		HttpResponse response = (HttpResponse) httpclient.execute(httpRequest);
+
+		HttpEntity entity = response.getEntity();
+
+		BufferedHttpEntity bufHttpEntity = new BufferedHttpEntity(entity);
+
+		InputStream instream = bufHttpEntity.getContent();
+
+		return getBytes(instream);
 
 	}
 
@@ -83,6 +109,7 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		int Port = cd.getPort();
 
 		String servletContext = "/TestTDSServer/TestServer?date=";
+		String quest = "&quest=data";
 
 		Calendar card = Calendar.getInstance();
 
@@ -106,7 +133,23 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		date += "d" + String.valueOf(day);
 
 		String URL = "http://" + serverURL + ":" + String.valueOf(Port)
-				+ servletContext + date;
+				+ servletContext + date + quest + "&id=null";
+
+		Log.v("ConnectionString", URL);
+
+		return URL;
+	}
+
+	public String getURLforImageQuest(String id) {
+		ConnectionData cd = ConnectionData.getInstance();
+		String serverURL = cd.getServer();
+		int Port = cd.getPort();
+
+		String servletContext = "/TestTDSServer/TestServer?id=";
+		String quest = "&quest=image";
+
+		String URL = "http://" + serverURL + ":" + String.valueOf(Port)
+				+ servletContext + id + quest;
 
 		Log.v("ConnectionString", URL);
 
@@ -133,9 +176,15 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 				n.setType(notificationMnmgr.getTypeByString(msg[6]));
 				n.setLatitude(Double.valueOf(msg[7]));
 				n.setLongitude(Double.valueOf(msg[8]));
-//				byte[] imageAsBytes = Base64.decode(myImageData.getBytes());
-//				Bitmap bp = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
-				n.setImage(null);
+				try {
+					n.setImage(sendGetForImage(getURLforImageQuest(msg[9])));
+					// n.setImage(null);
+					// Log.e("setImage to Ntotify", "success");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Log.e("setImage to Ntotify", "failed");
+				}
 				msgMnmgr.addNotification(n);
 			}
 		}
@@ -146,6 +195,26 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 			return true;
 		}
 		return false;
+	}
+
+	public static byte[] getBytes(InputStream is) throws IOException {
+
+		int len;
+		int size = 1024;
+		byte[] buf;
+
+		if (is instanceof ByteArrayInputStream) {
+			size = is.available();
+			buf = new byte[size];
+			len = is.read(buf, 0, size);
+		} else {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			buf = new byte[size];
+			while ((len = is.read(buf, 0, size)) != -1)
+				bos.write(buf, 0, len);
+			buf = bos.toByteArray();
+		}
+		return buf;
 	}
 
 	// // HTTP POST request

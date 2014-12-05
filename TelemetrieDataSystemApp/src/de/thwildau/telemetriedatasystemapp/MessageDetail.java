@@ -5,7 +5,9 @@ import java.util.Calendar;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,8 +28,11 @@ public class MessageDetail extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		Log.v("MessageDetail","bevor getintent");
+		
 		msg = (TDSMessage) getIntent().getSerializableExtra("messageObj");
 		
+		Log.v("MessageDetail","nach getintent");
 		
 	    ImageView typeIcon = (ImageView) findViewById(R.id.detail_typeicon);
 	    typeIcon.setImageResource(msg.getType().getImage());
@@ -56,7 +61,7 @@ public class MessageDetail extends Activity {
 		lat.setText(String.valueOf(msg.getLatitude()));
 		
 		ImageView image = (ImageView) findViewById(R.id.image);
-		image.setImageBitmap(msg.getImage());		
+		image.setImageBitmap(BitmapFactory.decodeByteArray(msg.getImage() , 0, msg.getImage().length));		
 		
 		postionBtn = (LinearLayout) findViewById(R.id.show_position);
 		final Intent intent = new Intent(this, PositionView.class);

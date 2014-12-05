@@ -3,8 +3,6 @@ package de.thwildau.telemetriedatasystemapp.data;
 import java.io.Serializable;
 import java.util.Calendar;
 
-import android.graphics.Bitmap;
-
 public class TDSMessage implements Serializable {
 
 	/**
@@ -16,7 +14,7 @@ public class TDSMessage implements Serializable {
 	private Calendar datum;
 	private double latitude;
 	private double longitude;
-	private Bitmap image;
+	private byte[] image;
 	
 	//getter and setter type
 	public NotificationType getType() {
@@ -49,10 +47,10 @@ public class TDSMessage implements Serializable {
 	}
 	
 	//getter  and setter image
-	public Bitmap getImage() {
+	public byte[] getImage() {
 		return image;
 	}
-	public void setImage(Bitmap image) {
+	public void setImage(byte[] image) {
 		this.image = image;
 	}
 

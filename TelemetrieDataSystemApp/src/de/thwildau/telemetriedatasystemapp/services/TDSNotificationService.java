@@ -54,6 +54,7 @@ public class TDSNotificationService extends Service {
 	}
 
 	// http://www.javacodegeeks.com/2014/01/android-service-tutorial.html
+	@SuppressWarnings("deprecation")
 	public static void sendAndroidNotification(boolean led) {
 		int icon = R.drawable.ic_launcher;
 		CharSequence text = "TDS";

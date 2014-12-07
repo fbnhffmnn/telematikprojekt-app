@@ -21,7 +21,7 @@ public class TDSTest {
 	
 	public TDSTest(){
 		Log.v("Server value=",connection.getServer());
-		Integer meinInteger = new Integer(connection.getPort()); 
+		Integer meinInteger = Integer.valueOf(connection.getPort()); 
         String s = meinInteger.toString();
 		Log.v("Port value=",s);
 		Log.v("FahrzeugID value=",connection.getFahrzeugID());

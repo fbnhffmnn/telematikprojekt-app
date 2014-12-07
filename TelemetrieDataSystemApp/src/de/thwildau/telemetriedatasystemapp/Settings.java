@@ -35,7 +35,7 @@ public class Settings extends Activity {
 		settingPassword = (EditText) findViewById(R.id.settingsPassword);
 
 		settingServer.setText(connection.getServer());
-		settingPort.setText(new Integer(connection.getPort()).toString());
+		settingPort.setText(String.valueOf(connection.getPort()));
 		settingFahrzeugID.setText(connection.getFahrzeugID());
 		settingPassword.setText(connection.getPassword());
 

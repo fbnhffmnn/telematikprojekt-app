@@ -12,16 +12,31 @@ import android.widget.TextView;
 import de.thwildau.telemetriedatasystemapp.R;
 import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
 
+/**
+ * Class defines the layout of the received messages list
+ * extends the array adapter
+ * @author Fabian
+ *
+ */
 public class NotificationArrayAdapter extends ArrayAdapter<TDSMessage> {
 	private final Context context;
 	private final TDSMessage[] values;
 	
+	/**
+	 * constructor
+	 * @param context
+	 * @param values - array of TDSMessage objects
+	 */
 	public NotificationArrayAdapter(Context context, TDSMessage[] values) {
 		super(context, R.layout.activity_receive_messages, values);
 		this.context = context;
 		this.values = values;
 	}
 
+	/**
+	 * override predefined getView method
+	 * is used to define the layout of the single list entries of the array 
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -43,16 +58,6 @@ public class NotificationArrayAdapter extends ArrayAdapter<TDSMessage> {
 	    date += ":";
 	    date += String.valueOf(values[position].getDatum().get(Calendar.SECOND));
 	    textViewsecond.setText(date);
-	    // Change the icon for Windows and iPhone
-//	    String s = values[position];
-//	    if (s.startsWith("Windows7") || s.startsWith("iPhone")
-//	        || s.startsWith("Solaris")) {
-//	      imageView.setImageResource(R.drawable.no);
-//	    } else {
-//	      imageView.setImageResource(R.drawable.ok);
-//	    }
-
 	    return rowView;
 	}
-
 }

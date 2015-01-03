@@ -8,8 +8,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,22 +27,32 @@ import de.thwildau.telemetriedatasystemapp.data.MessageManager;
 import de.thwildau.telemetriedatasystemapp.data.NotificationTypeManager;
 import de.thwildau.telemetriedatasystemapp.data.TDSMessage;
 
+/**
+ * HTTP Connection class is used for the connection with the server
+ * @author Fabian
+ *
+ */
 public class HTTPConnection extends AsyncTask<String, Void, String> {
-
+	
+	//define user agent
 	private final String USER_AGENT = "Mozilla/5.0";
+	//get manager instances
 	NotificationTypeManager notificationMnmgr = NotificationTypeManager
 			.getInstance();
 	MessageManager msgMnmgr = MessageManager.getInstance();
 
+	/**
+	 * predefined method from class extension AsyncTask, entry method
+	 */
 	@Override
 	protected String doInBackground(String... arg0) {
 		Boolean result = false;
 
 		try {
-			String response = sendGet(defineRequestURL());
-			getMessagesFromString(response);
-			result = checkNewMessage();
-			if (result == true) {
+			String response = sendGet(defineRequestURL());		//create url, send request, get response
+			getMessagesFromString(response);					//create message objects from response
+			result = checkNewMessage();							//check messages of new ones
+			if (result == true) {								 
 				return "new";
 			}
 
@@ -52,67 +64,84 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		return "not";
 	}
 
-	// HTTP GET request for data
+	/**
+	 *  HTTP GET request for data
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
 	private String sendGet(String url) throws Exception {
-
+		//define URL object from string url
 		URL obj = new URL(url);
+		//create an open connection to url defined server
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-		// optional default is GET
+		//optional default is GET
 		con.setRequestMethod("GET");
 
-		// add request header
+		//add request header
 		con.setRequestProperty("User-Agent", USER_AGENT);
-
+		//receive response code 
 		int responseCode = con.getResponseCode();
 		Log.v("Sending 'GET' request to URL", url);
 		Log.v("ResponseCode", String.valueOf(responseCode));
-
+		
+		//save inputstream in a buffered reader
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
-
+		//save buffered reader in a Stringbufffer
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);
 		}
 		in.close();
-
+		//return stringbuffer as string
 		return response.toString();
 
 	}
 
-	// HTTP GET request for image
+	/**
+	 *  HTTP GET request for image
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
 	private byte[] sendGetForImage(String url) throws Exception {
-
+		//define URL object from string url
 		URL obj = new URL(url);
-
+		//create HttpGet and HttpClient object from URL
 		HttpGet httpRequest = new HttpGet(obj.toURI());
 		HttpClient httpclient = new DefaultHttpClient();
-
+		//execute request and save response
 		HttpResponse response = (HttpResponse) httpclient.execute(httpRequest);
-
+		//get response entry
 		HttpEntity entity = response.getEntity();
-
+		//read response entry
 		BufferedHttpEntity bufHttpEntity = new BufferedHttpEntity(entity);
-
+		//get content of buffered entry
 		InputStream instream = bufHttpEntity.getContent();
-
+		//return bytes of the input stream 
 		return getBytes(instream);
 
 	}
 
+	/**
+	 * method that creates the request URL for receiving message data with defined user data
+	 * @return URL string to get message data from server
+	 */
 	public String defineRequestURL() {
-
+		//get user data from connection data manager
 		ConnectionData cd = ConnectionData.getInstance();
 		String serverURL = cd.getServer();
 		int Port = cd.getPort();
-
+		
+		//set path of servlet and type of request
 		String servletContext = "/TestTDSServer/TestServer?date=";
 		String quest = "&quest=data";
 
+		//get date from today one month ago
 		Calendar card = Calendar.getInstance();
-
 		int year = card.get(Calendar.YEAR);
 		int month = card.get(Calendar.MONTH);
 		int day = card.get(Calendar.DAY_OF_MONTH);
@@ -132,6 +161,7 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		date += "m" + String.valueOf(month);
 		date += "d" + String.valueOf(day);
 
+		//concatenate URL string
 		String URL = "http://" + serverURL + ":" + String.valueOf(Port)
 				+ servletContext + date + quest + "&id=null";
 
@@ -140,14 +170,22 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		return URL;
 	}
 
+	/**
+	 * method that creates the request URL for receiving image of message with defined user data
+	 * @param id - of the requested attachment
+	 * @return URL 
+	 */
 	public String getURLforImageQuest(String id) {
+		//get user data from connection data manager
 		ConnectionData cd = ConnectionData.getInstance();
 		String serverURL = cd.getServer();
 		int Port = cd.getPort();
 
+		//set path of servlet and type of request
 		String servletContext = "/TestTDSServer/TestServer?id=";
 		String quest = "&quest=image";
 
+		//concatenate URL string
 		String URL = "http://" + serverURL + ":" + String.valueOf(Port)
 				+ servletContext + id + quest;
 
@@ -156,40 +194,54 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		return URL;
 	}
 
+	/**
+	 * method to set message objects to message manager from server response string
+	 * @param str - string of the server response that should be analyzed 
+	 */
 	public void getMessagesFromString(String str) {
 		Log.v("Response", str);
+		List<TDSMessage> list = new ArrayList<TDSMessage>();
 		String[] msgArray = str.split("#");
 		if (str != "") {
-			msgMnmgr.clearList();
-
-			for (String s : msgArray) {
-				System.out.println(s);
-				String[] msg = s.split(";");
-
-				Calendar datum = new GregorianCalendar(
-						Integer.parseInt(msg[0]), Integer.parseInt(msg[1]) - 1,
-						Integer.parseInt(msg[2]), Integer.parseInt(msg[3]),
-						Integer.parseInt(msg[4]), Integer.parseInt(msg[5]));
-
-				TDSMessage n = new TDSMessage();
-				n.setDatum(datum);
-				n.setType(notificationMnmgr.getTypeByString(msg[6]));
-				n.setLatitude(Double.valueOf(msg[7]));
-				n.setLongitude(Double.valueOf(msg[8]));
-				try {
-					n.setImage(sendGetForImage(getURLforImageQuest(msg[9])));
-					// n.setImage(null);
-					// Log.e("setImage to Ntotify", "success");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					Log.e("setImage to Ntotify", "failed");
+			try{
+				for (String s : msgArray) {
+					System.out.println(s);
+					String[] msg = s.split(";");
+	
+					//get date
+					Calendar datum = new GregorianCalendar(
+							Integer.parseInt(msg[0]), Integer.parseInt(msg[1]) - 1,
+							Integer.parseInt(msg[2]), Integer.parseInt(msg[3]),
+							Integer.parseInt(msg[4]), Integer.parseInt(msg[5]));
+					//create new message and set attributes
+					TDSMessage n = new TDSMessage();
+					n.setDatum(datum);
+					n.setType(notificationMnmgr.getTypeByString(msg[6]));
+					n.setLatitude(Double.valueOf(msg[7]));
+					n.setLongitude(Double.valueOf(msg[8]));
+					//try to get image of the message from server
+					try {
+						n.setImage(sendGetForImage(getURLforImageQuest(msg[9])));
+					} catch (Exception e) {
+						e.printStackTrace();
+						Log.e("setImage to Ntotify", "failed");
+					}
+					list.add(n);				
 				}
-				msgMnmgr.addNotification(n);
+			}catch (Exception e){
+				e.printStackTrace();
+				Log.e("get Messages from String", "failed");
 			}
+			//clear old messages and set new ones
+			msgMnmgr.clearList();
+			msgMnmgr.setNotifyList(list);			
 		}
 	}
 
+	/**
+	 * method to check message list for new messages
+	 * @return boolean value - true = new messages - false = no new messages
+	 */
 	public Boolean checkNewMessage() {
 		if (msgMnmgr.sizeOfList() > msgMnmgr.getOldSizeOfList()) {
 			return true;
@@ -197,6 +249,12 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		return false;
 	}
 
+	/**
+	 * method to get bytes from an input stream 
+	 * @param is - input stream is needed
+	 * @return byte array of input stream
+	 * @throws IOException
+	 */
 	public static byte[] getBytes(InputStream is) throws IOException {
 
 		int len;

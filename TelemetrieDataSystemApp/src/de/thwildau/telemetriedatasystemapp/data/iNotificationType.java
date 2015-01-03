@@ -1,6 +1,10 @@
 package de.thwildau.telemetriedatasystemapp.data;
 
-
+/**
+ * Interface for the notification types
+ * @author Fabian
+ *
+ */
 public interface iNotificationType {
 	
 	public int getTypeNr();

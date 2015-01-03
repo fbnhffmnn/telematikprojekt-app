@@ -10,6 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import de.thwildau.telemetriedatasystemapp.data.ConnectionData;
 
+/**
+ * Class for "Settings"-Activity
+ * @author Fabian
+ *
+ */
 public class Settings extends Activity {
 
 	ConnectionData connection = ConnectionData.getInstance();
@@ -19,26 +24,34 @@ public class Settings extends Activity {
 	EditText settingFahrzeugID;
 	EditText settingPassword;
 
+	/**
+	 * Android Activity onCreate method
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 
+		//set back button in actionbar
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		//get button element
 		Button save = (Button) findViewById(R.id.settingsSave);
 
+		//get gui elements
 		settingServer = (EditText) findViewById(R.id.settingsServer);
 		settingPort = (EditText) findViewById(R.id.settingsPort);
 		settingFahrzeugID = (EditText) findViewById(R.id.settingsFahrzeug);
 		settingPassword = (EditText) findViewById(R.id.settingsPassword);
 
+		//set user data from connection manager
 		settingServer.setText(connection.getServer());
 		settingPort.setText(String.valueOf(connection.getPort()));
 		settingFahrzeugID.setText(connection.getFahrzeugID());
 		settingPassword.setText(connection.getPassword());
 
+		//save button listener
 		save.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -47,6 +60,10 @@ public class Settings extends Activity {
 		});
 	}
 
+	/**
+	 * method to save user input data to connection manager and return to "MainActivity"
+	 * @param ClassToCall - Activity class that should be called
+	 */
 	@SuppressWarnings("rawtypes")
 	protected void save(Class ClassToCall) {
 		Intent intent = new Intent(this, ClassToCall);
@@ -57,6 +74,9 @@ public class Settings extends Activity {
 		startActivity(intent);
 	}
 
+	/**
+	 * method to finish activity by home button pressed
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -69,6 +89,9 @@ public class Settings extends Activity {
 		}
 	}
 
+	/**
+	 * method to finish activity on back button pressed
+	 */
 	@Override
 	public void onBackPressed() {
 		this.finish();

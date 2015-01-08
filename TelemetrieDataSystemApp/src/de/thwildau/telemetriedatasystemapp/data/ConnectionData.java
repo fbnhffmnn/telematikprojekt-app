@@ -12,7 +12,7 @@ public class ConnectionData {
 	private static ConnectionData instance;
 	
 	//needed values
-	private String server = "192.168.178.49";
+	private String server = "192.168.178.36";
 	private int port = 8080;				
 	private String fahrzeugID = "";		//not used anymore
 	private String password = "";		//not used anymore

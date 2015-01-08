@@ -137,33 +137,16 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		int Port = cd.getPort();
 		
 		//set path of servlet and type of request
-		String servletContext = "/TestTDSServer/TestServer?date=";
+		String servletContext = "/Web?date=";
 		String quest = "&quest=data";
 
 		//get date from today one month ago
-		Calendar card = Calendar.getInstance();
-		int year = card.get(Calendar.YEAR);
-		int month = card.get(Calendar.MONTH);
-		int day = card.get(Calendar.DAY_OF_MONTH);
-		if (month == Calendar.JANUARY) {
-			month = Calendar.DECEMBER;
-			year--;
-		} else {
-			month--;
-			if (day > 28) {
-				day = 28;
-			}
-		}
-		// because of month starts by 0, adding by 1 to get real month
-		month++;
-
-		String date = "y" + String.valueOf(year);
-		date += "m" + String.valueOf(month);
-		date += "d" + String.valueOf(day);
-
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -1);
+		
 		//concatenate URL string
 		String URL = "http://" + serverURL + ":" + String.valueOf(Port)
-				+ servletContext + date + quest + "&id=null";
+				+ servletContext + cal.getTimeInMillis() + quest;
 
 		Log.v("ConnectionString", URL);
 
@@ -182,7 +165,7 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 		int Port = cd.getPort();
 
 		//set path of servlet and type of request
-		String servletContext = "/TestTDSServer/TestServer?id=";
+		String servletContext = "/Web?date=";
 		String quest = "&quest=image";
 
 		//concatenate URL string
@@ -209,19 +192,17 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 					String[] msg = s.split(";");
 	
 					//get date
-					Calendar datum = new GregorianCalendar(
-							Integer.parseInt(msg[0]), Integer.parseInt(msg[1]) - 1,
-							Integer.parseInt(msg[2]), Integer.parseInt(msg[3]),
-							Integer.parseInt(msg[4]), Integer.parseInt(msg[5]));
+					Calendar datum = Calendar.getInstance();
+					datum.setTimeInMillis(Long.valueOf(msg[0]));
 					//create new message and set attributes
 					TDSMessage n = new TDSMessage();
 					n.setDatum(datum);
-					n.setType(notificationMnmgr.getTypeByString(msg[6]));
-					n.setLatitude(Double.valueOf(msg[7]));
-					n.setLongitude(Double.valueOf(msg[8]));
+					n.setType(notificationMnmgr.getType(Integer.valueOf(msg[1])));
+					n.setLatitude(Double.valueOf(msg[2]));
+					n.setLongitude(Double.valueOf(msg[3]));
 					//try to get image of the message from server
 					try {
-						n.setImage(sendGetForImage(getURLforImageQuest(msg[9])));
+						n.setImage(sendGetForImage(getURLforImageQuest(msg[0])));
 					} catch (Exception e) {
 						e.printStackTrace();
 						Log.e("setImage to Ntotify", "failed");

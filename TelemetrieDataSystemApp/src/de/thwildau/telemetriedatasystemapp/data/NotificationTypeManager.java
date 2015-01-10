@@ -20,9 +20,11 @@ public class NotificationTypeManager {
 	 */
 	NotificationTypeManager(){
 		setTypes(new NotificationType[]{
-			new NotificationType(0, "Unknown", R.drawable.information),
-			new NotificationType(1, "Information", R.drawable.information),
-			new NotificationType(2, "Warning", R.drawable.warning),
+			new NotificationType(0, "Unknown", R.drawable.event0),
+			new NotificationType(1, "Object detected", R.drawable.event1),
+			new NotificationType(2, "Driver is sleeping", R.drawable.event2),
+			new NotificationType(3, "Human on road", R.drawable.event3),
+			new NotificationType(4, "Potholes in the road", R.drawable.event4),
 		});
 	}
 	 

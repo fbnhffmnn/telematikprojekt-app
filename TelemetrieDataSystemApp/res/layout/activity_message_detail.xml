@@ -16,7 +16,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginRight="6dip"
             android:contentDescription="@string/app_name_short"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/icon_launch" />
 
         <TextView
             android:id="@+id/type"
@@ -131,6 +131,6 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:contentDescription="@string/app_name_short"
-		android:src="@drawable/logo" />
+		android:src="@drawable/app_logo" />
 
 </LinearLayout>

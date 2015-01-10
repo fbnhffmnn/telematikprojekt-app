@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:contentDescription="@string/tdslogo"
-        android:src="@drawable/logo" />
+        android:src="@drawable/app_logo" />
 
     <TextView
         android:id="@+id/textView1"

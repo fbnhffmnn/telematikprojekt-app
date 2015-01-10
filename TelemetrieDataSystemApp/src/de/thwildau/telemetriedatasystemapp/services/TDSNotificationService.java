@@ -85,7 +85,7 @@ public class TDSNotificationService extends Service {
 	@SuppressWarnings("deprecation")
 	public static void sendAndroidNotification(boolean led) {
 		//define notification
-		int icon = R.drawable.ic_launcher;
+		int icon = R.drawable.icon_launch;
 		CharSequence text = "TDS";
 		CharSequence contentTitle = "TDS - Incoming Message";
 		CharSequence contentText = "From your observed car.";

@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -40,26 +39,27 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 	NotificationTypeManager notificationMnmgr = NotificationTypeManager
 			.getInstance();
 	MessageManager msgMnmgr = MessageManager.getInstance();
-
+	ConnectionData cd = ConnectionData.getInstance();
 	/**
 	 * predefined method from class extension AsyncTask, entry method
 	 */
 	@Override
 	protected String doInBackground(String... arg0) {
 		Boolean result = false;
-
-		try {
-			String response = sendGet(defineRequestURL());		//create url, send request, get response
-			getMessagesFromString(response);					//create message objects from response
-			result = checkNewMessage();							//check messages of new ones
-			if (result == true) {								 
-				return "new";
+		if(cd.getService() == true){
+			try {
+				String response = sendGet(defineRequestURL());		//create url, send request, get response
+				getMessagesFromString(response);					//create message objects from response
+				result = checkNewMessage();							//check messages of new ones
+				if (result == true) {								 
+					return "new";
+				}
+	
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "not";
 			}
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "not";
 		}
 		return "not";
 	}
@@ -132,7 +132,6 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 	 */
 	public String defineRequestURL() {
 		//get user data from connection data manager
-		ConnectionData cd = ConnectionData.getInstance();
 		String serverURL = cd.getServer();
 		int Port = cd.getPort();
 		
@@ -160,7 +159,6 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
 	 */
 	public String getURLforImageQuest(String id) {
 		//get user data from connection data manager
-		ConnectionData cd = ConnectionData.getInstance();
 		String serverURL = cd.getServer();
 		int Port = cd.getPort();
 

@@ -16,6 +16,7 @@ public class ConnectionData {
 	private int port = 8080;				
 	private String fahrzeugID = "";		//not used anymore
 	private String password = "";		//not used anymore
+	private Boolean service = false;
 	
 	/**
 	 * constructor
@@ -70,5 +71,14 @@ public class ConnectionData {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	//getter and setter service
+	public Boolean getService() {
+		return service;
+	}
+
+	public void setService(Boolean service) {
+		this.service = service;
 	}
 }
